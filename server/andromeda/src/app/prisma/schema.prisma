@@ -1,0 +1,45 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql" // Use your database provider
+    url      = env("DATABASE_URL") // Environment variable for the connection string
+}
+
+model User {
+    id        Int            @id @default(autoincrement())
+    name      String?
+    email     String         @unique
+    entries   JournalEntry[] // Relation to journal entries
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
+}
+
+model JournalEntry {
+    id          Int          @id @default(autoincrement())
+    userId      Int // Foreign key to User
+    user        User         @relation(fields: [userId], references: [id])
+    title       String
+    content     String
+    date        DateTime
+    tags        Tag[]        @relation("EntryTags") // Many-to-many with Tag
+    attachments Attachment[] // Relation to attachments
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+}
+
+model Attachment {
+    id        Int          @id @default(autoincrement()) // Primary key
+    entryId   Int // Foreign key to JournalEntry
+    entry     JournalEntry @relation(fields: [entryId], references: [id])
+    fileUrl   String // URL of the file
+    fileType  String // File type (e.g., image/png)
+    createdAt DateTime     @default(now())
+}
+
+model Tag {
+    id      Int            @id @default(autoincrement()) // Primary key
+    name    String         @unique // Unique tag name
+    entries JournalEntry[] @relation("EntryTags") // Many-to-many with JournalEntry
+}
