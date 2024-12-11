@@ -1,95 +1,38 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
 
-export default function Home() {
+import { JournalEntry } from '@prisma/client';
+import { useState } from "react";
+import MainView from "./ui/MainView";
+import Navbar from "./ui/Navbar";
+import Sidebar from "./ui/Sidebar";
+
+const App = () => {
+  const [journalEntries, setJournalEntries] = useState([
+    {
+      id: 0,
+      userId: 0,
+      title: "Hello World",
+      content: "Hi there! Today was quite the day. oh wow. asdflasdfj alsdf.asdf la;sdjfasd.f \nasdfjjasdf;a sdf.asdf asdf;aslkdj",
+      date: Date(),
+      createdAt: Date(),
+      updatedAt: Date(),
+    },
+  ]);
+  const [selectedJournalEntry, setSelectedJournalEntry] = useState(null);
+
+  const handleSelectJournalEntry = (journalEntry: JournalEntry) => {
+    setSelectedJournalEntry(journalEntry);
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <div style={{ display: "flex", height: "100vh", flexDirection: "column" }}>
+      <Navbar />
+      <div style={{ display: "flex", flex: 1 }}>
+        <Sidebar posts={journalEntries} onSelectPost={handleSelectJournalEntry} />
+        <MainView post={selectedJournalEntry} />
+      </div>
     </div>
   );
-}
+};
+
+export default App;

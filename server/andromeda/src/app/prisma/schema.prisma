@@ -23,7 +23,7 @@ model JournalEntry {
     user        User         @relation(fields: [userId], references: [id])
     title       String
     content     String
-    date        DateTime
+    date        DateTime     @default(now())
     tags        Tag[]        @relation("EntryTags") // Many-to-many with Tag
     attachments Attachment[] // Relation to attachments
     createdAt   DateTime     @default(now())
