@@ -12,6 +12,9 @@ export default function SignIn() {
     if (session) {
         return (
             <>
+                <br></br>
+                <p>Welcome, {session.user.name}</p>
+                <br></br>
                 {/* Signed in as {session.user.email} <br /> */}
                 <button onClick={() => signOut()}>Sign out</button>
             </>
@@ -19,7 +22,9 @@ export default function SignIn() {
     }
     return (
         <>
-            Not signed in <br />
+            <br></br>
+            <p>Please sign in to continue</p>
+            <br></br>
             <button onClick={() => signIn()}>Sign in</button>
         </>
     )
