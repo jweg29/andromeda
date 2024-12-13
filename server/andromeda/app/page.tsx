@@ -1,5 +1,4 @@
 
-import { Button } from "@mantine/core";
 import WelcomeSignIn from "./ui/WelcomeSignIn";
 
 const App = () => {
@@ -8,7 +7,6 @@ const App = () => {
       <h1>Welcome to Andromeda ✨</h1>
       <WelcomeSignIn></WelcomeSignIn>
       <div style={{ padding: "20px" }}>
-        <Button variant="filled" color="violet">Click Me</Button>
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ export default function SignIn() {
             <br></br>
             <p>Please sign in to continue</p>
             <br></br>
-            <button onClick={() => signIn()}>Sign in</button>
+            <Button variant="filled" color="violet" onClick={() => signIn()}>Sign in</Button>
         </>
     )
 }

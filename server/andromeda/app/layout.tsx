@@ -1,12 +1,19 @@
-import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from "@mantine/core";
+import { ColorSchemeScript, mantineHtmlProps, MantineProvider, MantineThemeOverride } from "@mantine/core";
+import '@mantine/core/styles.css';
 import type { Metadata } from "next";
-import { theme } from '../theme';
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Andromeda ✨",
   description: "🌀",
 };
+
+const theme: MantineThemeOverride = {
+  //colorScheme: "light", // "light" or "dark"
+  fontFamily: "Arial, sans-serif",
+  primaryColor: "violet", // Optional: Customize primary color
+};
+
 
 export default function RootLayout({
   children,
