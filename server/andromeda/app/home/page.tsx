@@ -1,6 +1,7 @@
 "use client"
 
 import { Button, Container, Flex, Space, Text } from "@mantine/core";
+import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const Home = () => {
@@ -17,7 +18,7 @@ const Home = () => {
             <Container
                 style={{
                     height: "100vh", // Ensures the height fills the viewport
-                    background: "linear-gradient(135deg, #6D83F2, #E56499)",
+                    background: "linear-gradient(135deg, #19004B, #260073, #310093, #3B00B2, #4300C8)",
                     boxSizing: "border-box", // Ensures padding is included in height calculations
                     margin: 0, // Removes default margin
                 }}
@@ -49,10 +50,13 @@ const Home = () => {
                     </Text>
                     <Space h="l" />
                     <Button
+                        leftSection={<IconBrandGoogleFilled size={20} />}
+                        //color=""
+                        radius="xl"
                         size="xl"
                         onClick={() => signIn("google")}
                     >
-                        Login with Google
+                        Sign in with Google
                     </Button>
                     <Space />
                 </Flex>
