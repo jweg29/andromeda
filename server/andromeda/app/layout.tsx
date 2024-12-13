@@ -1,4 +1,4 @@
-import { ColorSchemeScript, mantineHtmlProps, MantineThemeOverride } from "@mantine/core";
+import { ColorSchemeScript, Container, mantineHtmlProps, MantineThemeOverride } from "@mantine/core";
 import '@mantine/core/styles.css';
 import type { Metadata } from "next";
 import "./globals.css";
@@ -40,7 +40,17 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProviderWrapper>
-          {children}
+          <Container fluid
+            style={{
+              height: "100vh", // Ensures the height fills the viewport
+              background: "linear-gradient(135deg, #19004B, #260073, #310093, #3B00B2, #4300C8)",
+              boxSizing: "border-box", // Ensures padding is included in height calculations
+              margin: 0, // Removes default margin
+              padding: 0,
+            }}
+          >
+            {children}
+          </Container>
         </MantineProviderWrapper>
         {/* <MantineProvider theme={theme}>{children}</MantineProvider> */}
       </body>

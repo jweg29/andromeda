@@ -1,9 +1,11 @@
-import React from "react";
+import { Button } from "@mantine/core";
+import { IconLogout } from "@tabler/icons-react";
+import { signOut } from "next-auth/react";
+
 
 const Navbar = () => {
     const handleLogin = () => {
         console.log("Login button clicked!");
-        // Implement login functionality here
     };
 
     return (
@@ -12,23 +14,26 @@ const Navbar = () => {
             alignItems: "center",
             justifyContent: "space-between",
             padding: "10px 20px",
-            backgroundColor: "#282c34",
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
             color: "white",
         }}>
-            <h1 style={{ margin: 0 }}>My Blog</h1>
-            <button
-                onClick={handleLogin}
+            <h1 style={{
+                fontSize: "22px",
+                fontWeight: "700",
+                fontFamily: 'Aboreto',
+                margin: 0
+            }}>Andromeda ✨</h1>
+            <Button
                 style={{
-                    padding: "5px 15px",
-                    border: "none",
-                    borderRadius: "5px",
-                    backgroundColor: "#61dafb",
-                    color: "black",
-                    cursor: "pointer",
+                    paddingLeft: "10px",
                 }}
+                leftSection={<IconLogout size={18} />}
+                radius="xl"
+                size="xsm"
+                onClick={() => signOut("google")}
             >
-                Login
-            </button>
+                Sign out
+            </Button>
         </div>
     );
 };
