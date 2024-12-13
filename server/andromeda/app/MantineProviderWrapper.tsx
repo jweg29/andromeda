@@ -2,17 +2,20 @@
 
 import { MantineProvider, MantineThemeOverride } from '@mantine/core';
 import '@mantine/core/styles.css';
+import { SessionProvider } from 'next-auth/react';
 
 const theme: MantineThemeOverride = {
-    fontFamily: 'Open Sans',
+    //colorScheme: "light", // "light" or "dark"
+    fontFamily: "Arial, sans-serif",
+    primaryColor: "violet", // Optional: Customize primary color
 };
 
-export function MantineProviderWrapper({ children }: {
-    children: React.ReactNode
-}) {
+export function MantineProviderWrapper({ children }: { children: React.ReactNode }) {
     return (
-        <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-            {children}
-        </MantineProvider>
+        <SessionProvider>
+            <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+                {children}
+            </MantineProvider>
+        </SessionProvider>
     );
 }
