@@ -1,13 +1,11 @@
 "use client"
 
+import { Button } from "@mantine/core";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function SignIn() {
 
     const { data: session } = useSession()
-
-    console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
-    console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
 
     if (session) {
         return (
@@ -16,7 +14,9 @@ export default function SignIn() {
                 <p>Welcome, {session.user.name}</p>
                 <br></br>
                 {/* Signed in as {session.user.email} <br /> */}
-                <button onClick={() => signOut()}>Sign out</button>
+                <Button onClick={() => signOut()}>
+                    Sign out
+                </Button>
             </>
         )
     }

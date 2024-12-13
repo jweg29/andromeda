@@ -4,8 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(req: NextRequest): NextResponse | void {
     // Example: Check for a cookie named 'authToken'
     const token = req.cookies.get("authToken");
-    console.log("middleware function");
-    console.log("token: ")
 
     if (!token) {
         // Redirect unauthenticated users to the homepage

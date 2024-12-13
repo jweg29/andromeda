@@ -1,12 +1,15 @@
+
+import { Button } from "@mantine/core";
 import WelcomeSignIn from "./ui/WelcomeSignIn";
 
 const App = () => {
-  //const { user, login } = useAuth();
-
   return (
     <div style={{ textAlign: "center", marginTop: "14vh" }}>
-      <h1>Welcome to Adromeda ✨</h1>
+      <h1>Welcome to Andromeda ✨</h1>
       <WelcomeSignIn></WelcomeSignIn>
+      <div style={{ padding: "20px" }}>
+        <Button variant="filled" color="violet">Click Me</Button>
+      </div>
     </div>
   );
 };
