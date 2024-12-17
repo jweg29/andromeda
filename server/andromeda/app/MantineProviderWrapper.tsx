@@ -13,7 +13,12 @@ const theme: MantineThemeOverride = {
 export function MantineProviderWrapper({ children }: { children: React.ReactNode }) {
     return (
         <SessionProvider>
-            <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+            <MantineProvider
+                withGlobalStyles
+                withNormalizeCSS
+                defaultColorScheme="light"
+                forceColorScheme="light"
+                theme={theme}>
                 {children}
             </MantineProvider>
         </SessionProvider>

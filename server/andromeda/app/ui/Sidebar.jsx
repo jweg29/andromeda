@@ -1,3 +1,4 @@
+import { Button } from "@mantine/core";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ posts, onSelectPost }) => {
@@ -15,21 +16,22 @@ const Sidebar = ({ posts, onSelectPost }) => {
         color: "white"
       }}>Posts</h3> */}
       <ul style={{ listStyleType: "none", padding: 0 }}>
+        <li style=
+          {{
+            marginTop: "10px",
+            marginLeft: "10px",
+            marginRight: "10px",
+            marginBottom: "10px",
+            textAlign: "center",
+          }}>
+          <Button
+            radius={40}>New Journal</Button>
+        </li>
+
         {posts.map((post) => (
           <li
             key={post.id}
             className={styles["sidebar-item"]}
-            // style={{
-            //   color: "rgba(50, 48, 43, 1)",
-            //   margin: "0px",
-            //   padding: "10px",
-            //   cursor: "pointer",
-            //   backgroundColor: "white",
-            //   fontFamily: "sans-serif",
-            //   fontSize: "14px",
-            //   fontWeight: 500,
-            //   '&:hover': { backgroundColor: 'red' }
-            // }}
             onClick={() => onSelectPost(post)}
           >
             {post.title}

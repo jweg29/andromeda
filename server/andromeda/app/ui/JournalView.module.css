@@ -1,0 +1,25 @@
+.editor-content {
+    min-height: 70vh;
+}
+
+.editor-title {
+    margin: 0px;
+    padding: 0px;
+}
+
+.editor-title p {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.editor-content content {}
+
+.editor-content p {
+    color: rgba(55, 53, 48, 1);
+}
+
+/* .sidebar-item:hover {
+    background-color: rgba(98, 67, 209);
+    color: white;
+} */

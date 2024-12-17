@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 const theme: MantineThemeOverride = {
-  //colorScheme: "light", // "light" or "dark"
+  colorScheme: "light", // "light" or "dark"
+  body: 'white', // Override the body color
   fontFamily: "Arial, sans-serif",
   primaryColor: "violet", // Optional: Customize primary color
 };
