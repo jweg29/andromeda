@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "../../lib/auth/authOptions";
 
 /**
  * 
@@ -35,7 +35,11 @@ export async function GET() {
             }
         );
     } catch (error) {
-        console.error('Error fetching Journal Entires:', error.stack);
+        if (error instanceof Error) {
+            console.error('Error fetching Journal Entires:', error.message);
+        } else {
+            console.error('Error fetching Journal Entires:', error);
+        }
         return NextResponse.json(
             { error: 'Failed to fetch journal entries' },
             {
