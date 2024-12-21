@@ -11,7 +11,7 @@ import { authOptions } from "../../../lib/auth/authOptions";
  */
 export async function PUT(
     request: Request,
-    context: { params: { id: string } } // Include `context` for dynamic params
+    { params }: { params: { id: string } } // Correctly type the context
 ) {
     const session = await getServerSession(authOptions);
 
@@ -21,7 +21,7 @@ export async function PUT(
 
     try {
         // Await params before destructuring
-        const { id } = await context.params;
+        const { id } = await params;
 
         const body = await request.json();
         const { title, content } = body;
