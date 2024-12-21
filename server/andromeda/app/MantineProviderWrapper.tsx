@@ -2,6 +2,7 @@
 
 import { MantineProvider, MantineThemeOverride } from '@mantine/core';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 import { SessionProvider } from 'next-auth/react';
 
 const theme: MantineThemeOverride = {

@@ -1,4 +1,4 @@
-import { ColorSchemeScript, Container, mantineHtmlProps, MantineThemeOverride } from "@mantine/core";
+import { ColorSchemeScript, Container, mantineHtmlProps } from "@mantine/core";
 import '@mantine/core/styles.css';
 import type { Metadata } from "next";
 import "./globals.css";
@@ -7,13 +7,6 @@ import { MantineProviderWrapper } from "./MantineProviderWrapper";
 export const metadata: Metadata = {
   title: "Andromeda ✨",
   description: "🌀",
-};
-
-const theme: MantineThemeOverride = {
-  colorScheme: "light", // "light" or "dark"
-  body: 'white', // Override the body color
-  fontFamily: "Arial, sans-serif",
-  primaryColor: "violet", // Optional: Customize primary color
 };
 
 export default function RootLayout({
@@ -31,7 +24,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.gstatic.com"
+        />
         <link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
 
         <meta

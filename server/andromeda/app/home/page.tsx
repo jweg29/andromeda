@@ -6,7 +6,7 @@ import { Flex, Loader } from "@mantine/core";
 import { useSession } from "next-auth/react";
 
 const Home = () => {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     // Show a loading state while checking session status
     if (status === "loading") {
         return (

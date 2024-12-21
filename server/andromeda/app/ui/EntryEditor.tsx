@@ -2,6 +2,7 @@
 'use client'
 
 import { ActionIcon, Flex, Input, Space, Tooltip } from "@mantine/core";
+import { showNotification, updateNotification } from '@mantine/notifications';
 import { Link, RichTextEditor } from '@mantine/tiptap';
 import '@mantine/tiptap/styles.css';
 import { JournalEntry } from "@prisma/client";
@@ -100,9 +101,17 @@ const EntryEditor = ({ selectedJournalEntry, shouldCreateNewJournal, onDelete, o
     }
 
     const updateEntry = async (journalId: string) => {
+        const notificationId = 'update-journal-entry';
+
+        showNotification({
+            id: notificationId,
+            title: 'Saving post',
+            message: 'Your post is being saved...',
+            loading: true,
+        });
+
         try {
             console.log(`updatedEntry: ${title}, ${content}`)
-
             const res = await fetch(`/api/posts/${selectedJournalEntry?.id}`, {
                 method: "PUT",
                 headers: {
@@ -112,10 +121,24 @@ const EntryEditor = ({ selectedJournalEntry, shouldCreateNewJournal, onDelete, o
             });
 
             if (res.ok) {
+                updateNotification({
+                    id: notificationId,
+                    title: 'Success',
+                    message: 'Post saved!',
+                    color: 'green',
+                    loading: false,
+                });
                 const updatedEntry = await res.json();
                 onUpdate(updatedEntry);
             } else {
                 console.error("Failed to update entry");
+                updateNotification({
+                    id: notificationId,
+                    title: 'Error',
+                    message: 'Failed to save post. Please try again.',
+                    color: 'red',
+                    loading: false,
+                });
             }
         } catch (error) {
             console.error("Error updating entry:", error);
@@ -164,9 +187,14 @@ const EntryEditor = ({ selectedJournalEntry, shouldCreateNewJournal, onDelete, o
                         disabled={selectedJournalEntry == null}
                         size="md"
                         variant="filled"
-                        color="gray.5"
+                        color="violet.3"
                         aria-label="Settings"
-                        onClick={(event) => deleteEntry(selectedJournalEntry?.id)}
+                        onClick={(event) => {
+                            if (!selectedJournalEntry) {
+                                return;
+                            }
+                            deleteEntry(selectedJournalEntry?.id)
+                        }}
                     >
                         <IconTrash
                             style={{
