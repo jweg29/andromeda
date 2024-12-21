@@ -58,7 +58,7 @@ model VerificationToken {
 }
 
 model JournalEntry {
-    id          Int          @id @default(autoincrement())
+    id          String       @id @default(cuid())
     userId      String
     user        User         @relation(fields: [userId], references: [id])
     title       String
@@ -71,8 +71,8 @@ model JournalEntry {
 }
 
 model Attachment {
-    id        Int          @id @default(autoincrement()) // Primary key
-    entryId   Int // Foreign key to JournalEntry
+    id        String       @id @default(cuid())
+    entryId   String // Foreign key to JournalEntry
     entry     JournalEntry @relation(fields: [entryId], references: [id])
     fileUrl   String // URL of the file
     fileType  String // File type (e.g., image/png)
@@ -80,7 +80,7 @@ model Attachment {
 }
 
 model Tag {
-    id      Int            @id @default(autoincrement()) // Primary key
+    id      String         @id @default(cuid())
     name    String         @unique // Unique tag name
     entries JournalEntry[] @relation("EntryTags") // Many-to-many with JournalEntry
 }

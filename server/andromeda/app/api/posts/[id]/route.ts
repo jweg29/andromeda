@@ -90,7 +90,13 @@ export async function DELETE(
 
         return NextResponse.json({ message: "Journal entry deleted successfully" }, { status: 200 });
     } catch (error) {
-        console.error("Error deleting journal entry:", error ?? "Unknown error");
+        if (error != null) {
+            console.log(error.stack);
+            //console.error("Error deleting journal entry:", error);
+        } else {
+            console.error("Error deleting journal entry: Unknown error");
+        }
+        //console.error("Error deleting journal entry:", error ?? "Unknown error");
         return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
 }

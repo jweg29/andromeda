@@ -48,7 +48,7 @@ CREATE TABLE "VerificationToken" (
 
 -- CreateTable
 CREATE TABLE "JournalEntry" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
@@ -61,8 +61,8 @@ CREATE TABLE "JournalEntry" (
 
 -- CreateTable
 CREATE TABLE "Attachment" (
-    "id" SERIAL NOT NULL,
-    "entryId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "entryId" TEXT NOT NULL,
     "fileUrl" TEXT NOT NULL,
     "fileType" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -72,7 +72,7 @@ CREATE TABLE "Attachment" (
 
 -- CreateTable
 CREATE TABLE "Tag" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
@@ -80,8 +80,8 @@ CREATE TABLE "Tag" (
 
 -- CreateTable
 CREATE TABLE "_EntryTags" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL,
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL,
 
     CONSTRAINT "_EntryTags_AB_pkey" PRIMARY KEY ("A","B")
 );

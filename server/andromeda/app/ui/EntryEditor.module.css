@@ -1,5 +1,11 @@
 .editor-content {
+    /* min-height: 70vh; */
+}
+
+.editor {
     min-height: 70vh;
+    /* background-color: red; */
+    border-width: 1px;
 }
 
 .editor-title {

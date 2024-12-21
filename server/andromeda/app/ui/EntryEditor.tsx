@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import { ActionIcon, Flex, Space, Tooltip } from "@mantine/core";
-import { useForm } from '@mantine/form';
+import { ActionIcon, Flex, Input, Space, Tooltip } from "@mantine/core";
 import { Link, RichTextEditor } from '@mantine/tiptap';
 import '@mantine/tiptap/styles.css';
 import { JournalEntry } from "@prisma/client";
@@ -10,28 +9,46 @@ import { IconDeviceFloppy, IconTrash } from '@tabler/icons-react';
 import Underline from '@tiptap/extension-underline';
 import { BubbleMenu, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from "./EntryEditor.module.css";
 
-interface PostData {
-    title: string;
-    content: string;
+export interface JournalEntryData {
+    title: string,
+    content: string,
 }
 
 interface EntryEditorProps {
-    initialJournalEntry: JournalEntry | null;
+    selectedJournalEntry: JournalEntry | null;
+    shouldCreateNewJournal: boolean;
+    onDelete: (entryId: string) => void;
+    onUpdate: (updatedEntry: JournalEntry) => void;
+    onCreate: (newEntry: JournalEntry) => void;
+    setIsPerformingAction: (perfomingAction: boolean) => void;
 }
 
-const EntryEditor: React.FC<EntryEditorProps> = ({ initialJournalEntry }) => {
-    const form = useForm({
-        initialValues: {
-            post: initialJournalEntry
-        },
-        validate: {
-            /*title: (initialJournalEntry?.title) => (value.trim().length > 0 ? null : 'Title is required'),
-                content: (initialJournalEntry?.content) => (value.trim().length > 0 ? null : 'Content is required'),*/
+const EntryEditor = ({ selectedJournalEntry, shouldCreateNewJournal, onDelete, onUpdate, onCreate }: EntryEditorProps) => {
+    const [title, setTitle] = useState(selectedJournalEntry?.title);
+    const [content, setContent] = useState(selectedJournalEntry?.content);
+
+    const initialContent = selectedJournalEntry?.content
+    const contentEditor = useEditor({
+        extensions: [StarterKit, Link, Underline],
+        content: initialContent,
+        onUpdate: ({ editor }) => {
+            console.log(`contentEditor onUpdate`)
+            setContent(editor.getHTML());
         },
     });
+
+    useEffect(() => {
+        // update title and content if the journal entry changes
+        if (title != selectedJournalEntry?.title) {
+            setTitle(selectedJournalEntry?.title);
+            const newContent = selectedJournalEntry?.content;
+            contentEditor?.commands.setContent(newContent || '');
+            setContent(selectedJournalEntry?.content);
+        }
+    }, [selectedJournalEntry]);
 
     const deleteEntry = async (journalId: string) => {
         try {
@@ -40,7 +57,7 @@ const EntryEditor: React.FC<EntryEditorProps> = ({ initialJournalEntry }) => {
             });
 
             if (res.ok) {
-                //setJournalEntries((prev) => prev.filter((entry) => entry.id !== id));
+                onDelete(journalId);
             } else {
                 console.error("Failed to delete entry");
             }
@@ -49,51 +66,57 @@ const EntryEditor: React.FC<EntryEditorProps> = ({ initialJournalEntry }) => {
         }
     };
 
-    const saveEntry = async (journalId: string) => {
+    const createEntry = async () => {
         try {
-            const res = await fetch(`/api/posts/${journalId}`, {
+            if (!title) {
+                console.error(`Attempted to create entry with Null newJournalData`)
+                return;
+            }
+
+            //const { title, content } = newJournalData as JournalEntryData;
+            console.log(`createEntry: ${title}, ${content}`)
+
+            const res = await fetch("/api/posts", {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ title, content }),
             });
 
-            if (res.ok) {
-                //setJournalEntries((prev) => prev.filter((entry) => entry.id !== id));
-            } else {
-                console.error("Failed to save entry");
+            if (!res.ok) {
+                throw new Error("Failed to create entry");
             }
+            const newEntry = await res.json();
+            onCreate(newEntry);
+            console.log("New entry created:", newEntry);
         } catch (error) {
-            console.error("Error saving entry:", error);
+            console.error("Error updating entry:", error);
         }
     }
 
-    const title = initialJournalEntry?.title;
-    const titleEditor = useEditor({
-        extensions: [StarterKit],
-        title,
-        onUpdate: ({ titleEditor }) => {
-            console.log(`titleEditor onChange`);
-        },
-    });
+    const updateEntry = async (journalId: string) => {
+        try {
+            console.log(`updatedEntry: ${title}, ${content}`)
 
-    const content = initialJournalEntry?.content;
-    const contentEditor = useEditor({
-        extensions: [StarterKit, Link, Underline],
-        content,
-        onUpdate: ({ editor }) => {
-            console.log(`contentEditor onChange`);
-        },
-    });
+            const res = await fetch(`/api/posts/${selectedJournalEntry?.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ title, content }),
+            });
 
-    useEffect(() => {
-        if (initialJournalEntry) {
-            console.log(`post ${initialJournalEntry}`)
-            console.log(`post ${initialJournalEntry.title}`)
-            //form.setValues(initialJournalEntry)
-            titleEditor?.commands.setContent(initialJournalEntry.title)
-            contentEditor?.commands.setContent(initialJournalEntry.content)
-            //form.setValues(initialPostData);
-            //editor?.commands.setContent(initialPostData.content);
+            if (res.ok) {
+                const updatedEntry = await res.json();
+                onUpdate(updatedEntry);
+            } else {
+                console.error("Failed to update entry");
+            }
+        } catch (error) {
+            console.error("Error updating entry:", error);
         }
-    }, [initialJournalEntry, titleEditor, contentEditor]);
+    }
 
     return (
         <div style={{
@@ -109,10 +132,17 @@ const EntryEditor: React.FC<EntryEditorProps> = ({ initialJournalEntry }) => {
             >
                 <Tooltip label="Save journal">
                     <ActionIcon
+                        disabled={selectedJournalEntry == null && (title == null || title == '')}
                         size="md"
                         variant="filled"
                         aria-label="Settings"
-                        onClick={(event) => saveEntry(initialJournalEntry?.id)}
+                        onClick={(event) => {
+                            if (selectedJournalEntry) {
+                                updateEntry(selectedJournalEntry?.id)
+                            } else {
+                                createEntry()
+                            }
+                        }}
                     >
                         <IconDeviceFloppy
                             style={{
@@ -127,11 +157,12 @@ const EntryEditor: React.FC<EntryEditorProps> = ({ initialJournalEntry }) => {
 
                 <Tooltip label="Delete journal">
                     <ActionIcon
+                        disabled={selectedJournalEntry == null}
                         size="md"
                         variant="filled"
                         color="gray.5"
                         aria-label="Settings"
-                        onClick={(event) => deleteEntry(initialJournalEntry?.id)}
+                        onClick={(event) => deleteEntry(selectedJournalEntry?.id)}
                     >
                         <IconTrash
                             style={{
@@ -146,32 +177,22 @@ const EntryEditor: React.FC<EntryEditorProps> = ({ initialJournalEntry }) => {
 
             <Space h="sm"></Space>
 
-            {/* <TextInput
-                size="lg"
-                style={{
-                }}
-                value={post.title}
+            <Input
+                size="xl"
+                radius="xs"
                 placeholder="Title"
-            /> */}
-
-            {/* <h2 style=
-                {{
-                    color: "rgba(55, 53, 48, 1)",
+                value={title}
+                onChange={(event) => {
+                    console.log(`title Input onChange`)
+                    setTitle(event.currentTarget.value);
                 }}
-            >{post.title}</h2> */}
-
-            <RichTextEditor
-                editor={titleEditor}
-            >
-                <RichTextEditor.Content
-                    className={styles["editor-title"]}
-                />
-            </RichTextEditor>
+            />
 
             <Space h="lg"></Space>
 
             <RichTextEditor
                 editor={contentEditor}
+                className={styles["editor"]}
             >
                 <RichTextEditor.Toolbar
                     sticky

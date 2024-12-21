@@ -1,7 +1,14 @@
 import { Button } from "@mantine/core";
+import { JournalEntry } from "@prisma/client";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = ({ posts, onSelectPost }) => {
+interface SidebarProps {
+  posts: JournalEntry[];
+  onSelectPost: (post: JournalEntry) => void;
+  onCreateNewPost: () => void;
+}
+
+const SidebarView = ({ posts, onSelectPost, onCreateNewPost }: SidebarProps) => {
   return (
     <div style={{
       width: "250px",
@@ -25,7 +32,11 @@ const Sidebar = ({ posts, onSelectPost }) => {
             textAlign: "center",
           }}>
           <Button
-            radius={40}>New Journal</Button>
+            radius={40}
+            onClick={onCreateNewPost}
+          >
+            New Journal
+          </Button>
         </li>
 
         {posts.map((post) => (
@@ -42,4 +53,4 @@ const Sidebar = ({ posts, onSelectPost }) => {
   );
 };
 
-export default Sidebar;
+export default SidebarView;
