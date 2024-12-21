@@ -70,6 +70,7 @@ const Dashboard = () => {
     };
 
     const handleCreateJournalEntry = () => {
+        setSelectedJournalEntry(null);
         setShouldCreateNewJournal(true);
     }
 

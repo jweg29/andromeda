@@ -41,14 +41,18 @@ const EntryEditor = ({ selectedJournalEntry, shouldCreateNewJournal, onDelete, o
     });
 
     useEffect(() => {
-        // update title and content if the journal entry changes
-        if (title != selectedJournalEntry?.title) {
+        if (shouldCreateNewJournal) {
+            setTitle("");
+            contentEditor?.commands.setContent("What's on your mind?");
+            setContent("What's on your mind?");
+        } else if (title != selectedJournalEntry?.title) {
+            // update title and content if the journal entry changes
             setTitle(selectedJournalEntry?.title);
             const newContent = selectedJournalEntry?.content;
             contentEditor?.commands.setContent(newContent || '');
             setContent(selectedJournalEntry?.content);
         }
-    }, [selectedJournalEntry]);
+    }, [selectedJournalEntry, shouldCreateNewJournal]);
 
     const deleteEntry = async (journalId: string) => {
         try {
